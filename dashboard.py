@@ -4,9 +4,11 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 
 # Set page configuration
-st.set_page_config(page_title="Dashboard KPI Ventes", layout="wide")
+st.set_page_config(page_title="TP1 INFO40113", layout="wide")
 
 st.title("Dashboard Analyse des Ventes")
+st.write("TCHUENTEU GUETCHUENG DAVID 20U2891")
+
 
 # Load data
 @st.cache_data
