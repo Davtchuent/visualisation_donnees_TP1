@@ -54,7 +54,7 @@ if df is not None:
         df_q1 = df
 
     avg_transaction = df_q1['Montant_Transaction'].mean()
-    st.metric(label="Moyenne du montant des transactions", value=f"{avg_transaction:.2f} €")
+    st.metric(label="Moyenne du montant des transactions", value=f"{avg_transaction:.2f} XAF")
     st.info("Calcul : Moyenne de la colonne 'Montant_Transaction'.")
 
     st.markdown("---")
@@ -113,18 +113,14 @@ if df is not None:
     clv_per_client = df.groupby('ID_Client')['Montant_Transaction'].sum().reset_index()
     clv_per_client.columns = ['ID_Client', 'CLV']
     
-    # Histogram to show distribution
-    fig_clv = px.histogram(clv_per_client, x="CLV", nbins=20, title="Distribution de la CLV par client")
-    st.plotly_chart(fig_clv, use_container_width=True)
+    # Display table 
+    st.dataframe(clv_per_client.sort_values(by='CLV', ascending=False).head(10))
     
-    with st.expander("Voir le détail de la CLV par client (Top 10)"):
-        st.dataframe(clv_per_client.sort_values(by='CLV', ascending=False).head(10))
-
     # Volet 2: Moyenne
     st.subheader("Volet 2 : CLV Moyenne")
     avg_clv = clv_per_client['CLV'].mean()
     
-    st.metric(label="CLV Moyenne pour l'ensemble des clients", value=f"{avg_clv:.2f} €")
+    st.metric(label="CLV Moyenne pour l'ensemble des clients", value=f"{avg_clv:.2f} XAF")
     st.info(f"Calcul : Moyenne des CLV calculées sur {len(clv_per_client)} clients uniques.")
 
     st.markdown("---")
@@ -135,7 +131,7 @@ if df is not None:
     best_category = category_revenue.idxmax()
     best_revenue = category_revenue.max()
     
-    st.success(f"La catégorie ayant généré le chiffre d'affaires le plus élevé est : **{best_category}** avec **{best_revenue:.2f} €**.")
+    st.success(f"La catégorie ayant généré le chiffre d'affaires le plus élevé est : **{best_category}** avec **{best_revenue:.2f} XAF**.")
     
     st.write("Classement des catégories par chiffre d'affaires :")
     #st.bar_chart(category_revenue)
@@ -146,13 +142,13 @@ if df is not None:
     bars = ax.bar(category_revenue.index, category_revenue.values, color=colors[:len(category_revenue)])
 
     ax.set_xlabel('Catégorie Produit')
-    ax.set_ylabel('Chiffre d\'affaires (€)')
+    ax.set_ylabel('Chiffre d\'affaires (XAF)')
     ax.set_title('Chiffre d\'affaires par catégorie')
 
     # Affichage des valeurs au-dessus des barres
     for bar in bars:
         height = bar.get_height()
-        ax.annotate(f'{height:.2f} €',
+        ax.annotate(f'{height:.2f} XAF',
                     xy=(bar.get_x() + bar.get_width() / 2, height),
                     xytext=(0, 3),  # décalage vertical
                     textcoords="offset points",
